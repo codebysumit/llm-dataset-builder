@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LLM Dataset Builder</title>
+
+    <!-- Bootstrap and Tagsinput CSS (ensure HTTPS) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css">
+
+    <!-- Other Required CSS Libraries -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+
+    <!-- JS Libraries (Showdown, MathJax, Highlight.js, Clipboard.js) -->
+    <script src="https://cdn.jsdelivr.net/npm/showdown@2.0.3/dist/showdown.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="editor-section">
+            <h1>LLM Dataset Builder</h1>
+            <div class="input-fields">
+                <textarea id="instruction-input" rows="4" cols="50" placeholder="Instructions...">Write a Markdown text with MathJax equations and code block.</textarea>
+                <textarea id="input-input" rows="4" cols="50" placeholder="Input..."></textarea>
+                <textarea id="markdown-input" rows="15" cols="50" placeholder="Output using Markdown...">
+# Example Document
+This is a Markdown text with MathJax equations and code highlighting:
+
+Inline math: \\( E = mc^2 \\)
+
+Display math:
+$$
+a^2 + b^2 = c^2
+$$
+
+Code block example:
+```javascript
+function greet() {
+    console.log("Hello, world!");
+}
+greet();
+```
+                </textarea>
+                <input id="tags-input" type="text" value="markdown,mathjax,code-block" data-role="tagsinput" placeholder="Lables..." />
+            </div>
+
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="renderMarkdown()">Render Markdown</button>
+                <button class="btn btn-secondary" onclick="markdownFileDownload()">Save Markdown</button>
+                <button class="btn btn-info" data-clipboard-target="#markdown-input">Copy Markdown</button>
+                <button class="btn btn-warning" onclick="jsonFileDownload()">Save As JSON</button>
+                <button class="btn btn-danger" onclick="clearAll()">Clear All</button>
+            </div>
+            
+            <div class="import-section">
+                <input type="file" id="selectFiles" value="Import" />
+                <button class="btn btn-success" id="import">Import</button>
+            </div>
+        </div>
+        <div class="preview-section">
+            <h2>Preview</h2>
+            <div id="html-output">
+                <p>Output is Empty!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery and Bootstrap Tagsinput JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
+
+    <!-- Custom Script -->
+    <script src="script.js"></script>
+    
+    <!-- Register Service Worker -->
+    <script>
+        if ("serviceWorker" in navigator) {
+          window.addEventListener("load", function () {
+            navigator.serviceWorker
+              .register("/serviceWorker.js")
+              .then((res) => console.log("service worker registered"))
+              .catch((err) => console.log("service worker not registered", err));
+          });
+        }
+    </script>
+</body>
+</html>
